@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use std::fmt;
 
 #[derive(Debug)]
@@ -34,6 +35,19 @@ impl fmt::Display for Obj {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "({}, {})", self.width, self.height)
     }
+}
+
+enum Direction {
+    Up(Point),
+    Down(Point),
+    Left(Point),
+    Right(Point),
+}
+
+
+struct Point {
+    x: i32,
+    y: i32,
 }
 
 fn main() {
