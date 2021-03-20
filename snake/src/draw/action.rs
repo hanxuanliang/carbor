@@ -23,7 +23,7 @@ pub fn draw_block(color: Color, x: i32, y: i32, ctx: &Context, g: &mut G2d) {
 }
 
 // 画一个矩形
-fn draw_rectangle(
+pub fn draw_rectangle(
     color: Color,
     x: i32,
     y: i32,

@@ -35,7 +35,7 @@ struct Block {
     y: i32,
 }
 
-struct Snake {
+pub struct Snake {
     direction: Direction,
     body: LinkedList<Block>,
     tail: Option<Block>,
