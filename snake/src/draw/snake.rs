@@ -35,6 +35,7 @@ struct Block {
     y: i32,
 }
 
+#[derive(Clone)]
 pub struct Snake {
     direction: Direction,
     body: LinkedList<Block>,
@@ -69,6 +70,10 @@ impl Snake {
     pub fn head_pos(&self) -> (i32, i32) {
         let head_block = self.body.front().unwrap();
         (head_block.x, head_block.y)
+    }
+
+    pub fn head_direction(&self) -> Direction {
+        self.direction
     }
 
     // 蛇的前进

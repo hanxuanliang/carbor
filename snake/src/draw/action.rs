@@ -9,6 +9,10 @@ fn to_coord(coord: i32) -> f64 {
     (coord as f64) * consts::BLOCK_SIZE
 }
 
+pub fn to_coord_u32(coord: i32) -> u32 {
+    to_coord(coord) as u32
+}
+
 // 画一个方格
 pub fn draw_block(color: Color, x: i32, y: i32, ctx: &Context, g: &mut G2d) {
     let graph_x = to_coord(x);
