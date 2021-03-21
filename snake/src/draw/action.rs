@@ -5,6 +5,7 @@ use piston_window::{rectangle, Context, G2d};
 
 use crate::consts;
 
+// 放大区块
 fn to_coord(coord: i32) -> f64 {
     (coord as f64) * consts::BLOCK_SIZE
 }

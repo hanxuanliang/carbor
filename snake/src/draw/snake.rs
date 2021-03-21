@@ -1,23 +1,24 @@
 #![allow(dead_code)]
 
 use piston_window::types::Color;
-use std::collections::LinkedList;
 use piston_window::{Context, G2d};
+use std::collections::LinkedList;
 
 use crate::draw::action::draw_block;
 
 const SNAKE_COLOR: Color = [0.00, 0.80, 0.00, 1.0];
 
-// 处理方向
+// 处理方向【蛇与键盘的交互运动】
 #[derive(Copy, Clone, PartialEq)]
 pub enum Direction {
-    Up, 
+    Up,
     Down,
     Left,
     Right,
 }
 
 impl Direction {
+    // 反转方向
     pub fn opposite(&self) -> Direction {
         match *self {
             Direction::Up => Direction::Down,
@@ -35,6 +36,7 @@ struct Block {
     y: i32,
 }
 
+// 蛇：方向，{本体，尾巴}
 #[derive(Clone)]
 pub struct Snake {
     direction: Direction,
@@ -47,10 +49,7 @@ impl Snake {
         let mut body: LinkedList<Block> = LinkedList::new();
         // 初始化 [0 -> 1 -> 2]
         for i in (0..3).rev() {
-            body.push_back(Block {
-                x: x + i,
-                y,
-            })
+            body.push_back(Block { x: x + i, y })
         }
 
         Snake {
@@ -60,6 +59,7 @@ impl Snake {
         }
     }
 
+    // 画蛇本身
     pub fn draw(&self, ctx: &Context, g: &mut G2d) {
         for block in &self.body {
             draw_block(SNAKE_COLOR, block.x, block.y, ctx, g);
@@ -72,6 +72,7 @@ impl Snake {
         (head_block.x, head_block.y)
     }
 
+    // 返回蛇当前的方向
     pub fn head_direction(&self) -> Direction {
         self.direction
     }
@@ -84,6 +85,7 @@ impl Snake {
         }
 
         let (last_x, last_y): (i32, i32) = self.head_pos();
+        // 生成一个新区块 {👆 -> 因为在屏幕上的 y轴 是负的，所以要移动在人类角度是反向的}
         let new_block = match self.direction {
             Direction::Up => Block {
                 x: last_x,
@@ -94,16 +96,15 @@ impl Snake {
                 y: last_y + 1,
             },
             Direction::Left => Block {
-                x: last_x,
-                y: last_y + 1,
+                x: last_x - 1,
+                y: last_y,
             },
             Direction::Right => Block {
-                x: last_x,
-                y: last_y + 1,
-            }
+                x: last_x + 1,
+                y: last_y,
+            },
         };
         self.body.push_front(new_block);
-        
         let removed_block = self.body.pop_back().unwrap();
         self.tail = Some(removed_block);
     }
@@ -114,7 +115,7 @@ impl Snake {
         let mut move_dir = self.direction;
         match dir {
             Some(d) => move_dir = d,
-            None => {},
+            None => {}
         }
 
         match move_dir {
