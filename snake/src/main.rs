@@ -22,7 +22,9 @@ fn main() {
         .build()
         .unwrap();
 
+    // 开始游戏
     let mut game = Game::new(width, height);
+    // 整个游戏的主控制，运行逻辑
     while let Some(event) = window.next() {
         if let Some(Button::Keyboard(key)) =  event.press_args() {
             game.key_pressed(key);
@@ -30,6 +32,10 @@ fn main() {
         window.draw_2d(&event, |c, g, _d| {
             clear(BLACK_COLOR, g);
             game.draw(&c, g);
+        });
+
+        event.update(|arg| {
+            game.update(arg.dt);
         });
     }
 }
